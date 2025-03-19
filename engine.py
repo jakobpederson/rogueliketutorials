@@ -4,9 +4,10 @@ from input_handlers import EventHandler
 
 
 class Engine:
-    def __init__(self, entities, event_handler, player):
+    def __init__(self, entities, event_handler, game_map, player):
         self.entities = entities
         self.event_handler = event_handler
+        self.game_map = game_map
         self.player = player
 
     def handle_events(self, events):
@@ -17,12 +18,16 @@ class Engine:
                 continue
 
             if isinstance(action, MovementAction):
-                self.player.move(dx=action.dx, dy=action.dy)
+                if self.game_map.tiles["walkable"][
+                    self.player.x + action.dx, self.player.y + action.dy
+                ]:
+                    self.player.move(dx=action.dx, dy=action.dy)
 
             elif isinstance(action, EscapeAction):
                 raise SystemExit()
 
     def render(self, console, context):
+        self.game_map.render(console)
         for entity in self.entities:
             console.print(entity.x, entity.y, entity.char, fg=entity.color)
         context.present(console)
