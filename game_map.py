@@ -4,7 +4,8 @@ from tcod.console import Console
 
 
 class GameMap:
-    def __init__(self, width: int, height: int):
+    def __init__(self, width, height, entities):
+        self.entities = set(entities)
         self.width, self.height = width, height
         self.tiles = np.full((width, height), fill_value=tile_types.wall, order="F")
         self.visible = np.full(
@@ -31,3 +32,8 @@ class GameMap:
             choicelist=[self.tiles["light"], self.tiles["dark"]],
             default=tile_types.SHROUD,
         )
+
+        for entity in self.entities:
+            # Only print entities that are in the FOV
+            if self.visible[entity.x, entity.y]:
+                console.print(entity.x, entity.y, entity.char, fg=entity.color)

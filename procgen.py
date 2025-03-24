@@ -34,6 +34,20 @@ class RectangularRoom:
         )
 
 
+def place_entities(room, dungeon, maximum_monsters):
+    number_of_monsters = random.randint(0, maximum_monsters)
+
+    for i in range(number_of_monsters):
+        x = random.randint(room.x1 + 1, room.x2 - 1)
+        y = random.randint(room.y1 + 1, room.y2 - 1)
+
+        if not any(entity.x == x and entity.y == y for entity in dungeon.entities):
+            if random.random() < 0.8:
+                pass  # TODO: Place an Orc here
+            else:
+                pass  # TODO: Place a Troll here
+
+
 def tunnel_between(start, end):
     """Return an L-shaped tunnel between these two points."""
     x1, y1 = start
@@ -58,11 +72,11 @@ def generate_dungeon(
     room_max_size,
     map_width,
     map_height,
+    max_monsters_per_room,
     player,
 ):
     """Generate a new dungeon map."""
-    dungeon = GameMap(map_width, map_height)
-
+    dungeon = GameMap(map_width, map_height, entities=[player])
     rooms: List[RectangularRoom] = []
 
     for r in range(max_rooms):
@@ -82,6 +96,7 @@ def generate_dungeon(
 
         # Dig out this rooms inner area.
         dungeon.tiles[new_room.inner] = tile_types.floor
+        place_entities(new_room, dungeon, max_monsters_per_room)
 
         if len(rooms) == 0:
             # The first room, where the player starts.
