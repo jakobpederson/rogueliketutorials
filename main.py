@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import copy
+
+import entity_factories
 import tcod
 from actions import EscapeAction, MovementAction
 from engine import Engine
@@ -21,7 +24,7 @@ def main():
     )
     max_monsters_per_room = 2
     event_handler = EventHandler()
-    player = Entity(int(screen_width / 2), int(screen_height / 2), "@", (255, 255, 255))
+    player = copy.deepcopy(entity_factories.player)
     game_map = generate_dungeon(
         max_rooms=max_rooms,
         room_min_size=room_min_size,
