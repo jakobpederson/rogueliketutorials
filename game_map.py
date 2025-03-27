@@ -37,3 +37,13 @@ class GameMap:
             # Only print entities that are in the FOV
             if self.visible[entity.x, entity.y]:
                 console.print(entity.x, entity.y, entity.char, fg=entity.color)
+
+    def get_blocking_entity_at_location(self, location_x, location_y):
+        for entity in self.entities:
+            if (
+                entity.blocks_movement
+                and entity.x == location_x
+                and entity.y == location_y
+            ):
+                return entity
+        return None
