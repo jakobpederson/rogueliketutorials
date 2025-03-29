@@ -4,7 +4,8 @@ from tcod.console import Console
 
 
 class GameMap:
-    def __init__(self, width, height, entities):
+    def __init__(self, engine, width, height, entities):
+        self.engine = engine
         self.entities = set(entities)
         self.width, self.height = width, height
         self.tiles = np.full((width, height), fill_value=tile_types.wall, order="F")
