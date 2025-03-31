@@ -20,7 +20,7 @@ class Action:
 
 
 class ActionWithDirection(Action):
-    def __init__(self, entity: Entity, dx: int, dy: int):
+    def __init__(self, entity, dx, dy):
         super().__init__(entity)
 
         self.dx = dx
@@ -73,4 +73,4 @@ class BumpAction(ActionWithDirection):
         if self.blocking_entity:
             return MeleeAction(self.entity, self.dx, self.dy).perform()
         else:
-            return MovementAction(self.dx, self.dy).perform()
+            return MovementAction(self.entity, self.dx, self.dy).perform()
